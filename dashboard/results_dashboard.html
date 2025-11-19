@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>NetOptim Dashboard</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; background: #f4f4f4; }
+  h1 { text-align: center; }
+  .card { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+  pre { background: #222; color: #0f0; padding: 10px; border-radius: 5px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>Panel de Resultados NetOptim</h1>
+
+<div class="card">
+  <h2>Resultados P-Median</h2>
+  <pre id="pmedian"></pre>
+</div>
+
+<div class="card">
+  <h2>Asignacion de Espectro</h2>
+  <canvas id="spectrumChart" width="400" height="200"></canvas>
+</div>
+
+<div class="card">
+  <h2>Simulacion de Trafico</h2>
+  <canvas id="trafficChart" width="400" height="200"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+async function loadJSON(path) {
+    const response = await fetch(path);
+    return await response.json();
+}
+
+async function loadResults() {
+    // Load p-median
+    const pmedian = await loadJSON('../results/p_median.json');
+    document.getElementById('pmedian').textContent = JSON.stringify(pmedian, null, 2);
+
+    // Load spectrum
+    const spectrum = await loadJSON('../results/spectrum.json');
+    new Chart(document.getElementById('spectrumChart'), {
+        type: 'bar',
+        data: {
+            labels: spectrum.band.map((_, i) => 'Cell ' + (i+1)),
+            datasets: [{ label: 'MHz asignados', data: spectrum.band }]
+        }
+    });
+
+    // Load traffic
+    const traffic = await loadJSON('../results/traffic.json');
+    const labels = Object.keys(traffic);
+    const blocked = labels.map(k => traffic[k].blocking_prob);
+
+    new Chart(document.getElementById('trafficChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{ label: 'Probabilidad de bloqueo', data: blocked }]
+        }
+    });
+}
+
+loadResults();
+</script>
+
+</body>
+</html>
