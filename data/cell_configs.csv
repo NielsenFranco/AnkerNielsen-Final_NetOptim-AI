@@ -1,0 +1,3 @@
+name,capacity_mbps,arrival_rate,mean_duration
+CellA,50,0.2,5
+CellB,80,0.15,6

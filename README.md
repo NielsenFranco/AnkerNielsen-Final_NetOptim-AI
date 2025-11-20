@@ -1,143 +1,143 @@
-# NetOptim_AI - Proyecto Final Investigacion Operativa
+# NetOptim_AI – Proyecto Final de Investigación Operativa
 
-Resumen:
-NetOptim_AI es un prototipo para optimizar ubicacion de antenas, asignacion de espectro y simulacion de trafico en una red movil. Integra tecnicas de investigacion operativa: p-median, EOQ-like decisions, optimizacion convexa, teoria de colas, teoria de juegos, MDP y simulacion con simpy.
+## Resumen
 
-## Estructura del repositorio:
+NetOptim_AI es un prototipo integral para optimizar **ubicación de antenas**, **asignación de espectro** y **simulación de tráfico** en una red 5G.  
+El proyecto integra diversas técnicas de Investigación Operativa:
 
-* data/                       # datos sinteticos generados
-* src/
+- **P-Median y Location Models**
+- **Optimización Convexa (CVXPY)**
+- **Teoría de Colas (Erlang B)**
+- **Simulación de Eventos Discretos (SimPy)**
+- **Teoría de Juegos (Best-Response)**
+- **MDP y Value Iteration**
+- **Optimización Robusta basada en escenarios (SAA)**
 
-  * network_graph.py
-  * location_models.py
-  * spectrum_optimization.py
-  * traffic_simulator.py
-  * queueing_analysis.py
-  * game_theory_solver.py
-  * mdp_policies.py
-  * robustness_tools.py
-  * integrator.py
-  * main_demo.py
-* dashboard/                 # entorno visual para ver resultados
-* notebooks/
-* results/
-* requirements.txt
-* README.md
+El sistema está completamente integrado para trabajar con **datasets en formato CSV** almacenados en la carpeta `data/`.
 
-## Instalacion (recomendado usar virtualenv o venv):
+---
 
-```
+## ✔ Estructura del repositorio
+
+project_root/
+│
+├── data/ # datasets reales en CSV
+│ ├── nodes.csv
+│ ├── clients.csv
+│ ├── cell_configs.csv
+│ └── spectrum_params.csv
+│
+├── src/
+│ ├── network_graph.py
+│ ├── location_models.py
+│ ├── spectrum_optimization.py
+│ ├── traffic_simulator.py
+│ ├── queueing_analysis.py
+│ ├── game_theory_solver.py
+│ ├── mdp_policies.py
+│ ├── robustness_tools.py
+│ ├── integrator.py # AHORA carga desde CSV
+│ └── main_demo.py # genera outputs CSV + JSON
+│
+├── dashboard/
+│ └── results_dashboard.html
+│
+├── results/ # salida automática (CSV + JSON)
+│
+├── requirements.txt
+└── README.md
+
+yaml
+Copiar código
+
+---
+
+# Instalación
+
+Se recomienda usar `venv`:
+
+```bash
 python -m venv venv
-```
 
-### Activar el entorno virtual
+Activar entorno virtual
+Windows
 
-**Windows:**
-
-```
 venv\Scripts\activate
-```
 
-### Actualizar pip
+Actualizar pip
 
-```
-python.exe -m pip install --upgrade pip
-```
+python -m pip install --upgrade pip
 
-### Instalar dependencias
+Instalar dependencias
 
-```
 pip install -r requirements.txt
-```
 
-### Dependencias principales (si quieres instalarlas manualmente):
+Dependencias principales (alternativa)
 
-```
-pip install numpy scipy pandas matplotlib networkx simpy cvxpy pulp seaborn
-```
+pip install numpy pandas matplotlib networkx simpy cvxpy pulp seaborn
 
----
+✔ Uso y ejecución
+Los datasets deben estar en:
 
-## Como ejecutar la demo
 
-Desde la raiz del repositorio:
+data/nodes.csv
+data/clients.csv
+data/cell_configs.csv
+data/spectrum_params.csv
 
-```
+Ejecutar la demo principal
+Desde la raíz del repositorio:
+
+
 python src/main_demo.py
-```
 
-Esto genera automaticamente:
+Esto generará automáticamente:
 
-* p_median.json
-* spectrum.json
-* traffic.json
+En results/:
+p_median.json
 
-en la carpeta **results/**.
+p_median.csv
 
----
+spectrum.json
 
-# Ejecutar el dashboard visual en el navegador
+spectrum.csv
 
-Para visualizar los resultados en un entorno grafico amigable, se utiliza el archivo:
+traffic.json
 
-```
-dashboard/results_dashboard.html
-```
+traffic.csv
 
-### Paso 1: Levantar un servidor local (obligatorio)
+Todos estos resultados se basan en los datasets reales en data/.
 
-Dentro de **netoptim_ai**, ejecutar:
+✔ Dashboard visual
+Para visualizar resultados con un entorno gráfico (HTML):
 
-```
+Paso 1 — levantar servidor local
+bash
+Copiar código
 python -m http.server 8000
-```
+Paso 2 — abrir en el navegador
+Ir a:
 
-### Paso 2: Abrir el dashboard en el navegador
-
-Ingresar a:
-
-```
+bash
+Copiar código
 http://localhost:8000/dashboard/results_dashboard.html
-```
+El dashboard muestra:
 
-Con esto podras ver:
+Clusters y decisiones del modelo P-Median
 
-* Resultados del modelo P-Median
-* Grafico de asignacion de espectro
-* Grafico de probabilidad de bloqueo
+Gráfico de asignación de espectro
 
----
+Gráfico de probabilidades de bloqueo
 
-## Archivos importantes:
-
-* **network_graph.py**: construccion del grafo de ubicaciones
-* **location_models.py**: p-median y cobertura
-* **spectrum_optimization.py**: asignacion convexa de banda
-* **traffic_simulator.py**: simulacion de trafico con simpy
-* **queueing_analysis.py**: calculo Erlang B
-* **game_theory_solver.py**: best-response para dos operadores
-* **mdp_policies.py**: value iteration para politicas MDP
-* **robustness_tools.py**: generacion de escenarios
-* **main_demo.py**: ejecuta todo y genera resultados reproducibles
-
----
-
-## Entregables sugeridos para la materia:
-
-* codigo fuente (src/)
-* dataset sintetico (data/)
-* notebook resumen (notebooks/)
-* informe final PDF (docs/informe.pdf)
-* presentacion (docs/presentation.pdf)
-
----
-
-## Notas
-
-* Algunos modulos requieren solvers adicionales para cvxpy como ECOS, OSQP o SCS:
-
-```
-pip install ecos osqp scs
-```
-
-* El dashboard requiere usar un servidor local para visualizar JSON correctamente.
+✔ Descripción de módulos importantes
+Archivo	Función
+network_graph.py	Construcción del grafo físico de nodos
+location_models.py	Implementación P-Median usando ILP (PuLP)
+spectrum_optimization.py	Asignación convexa de banda con CVXPY
+traffic_simulator.py	Simulación de tráfico con SimPy
+queueing_analysis.py	Fórmula Erlang B
+game_theory_solver.py	Juego no cooperativo (Best-Response Dynamics)
+mdp_policies.py	Value Iteration para políticas de handover
+robustness_tools.py	Optimización robusta por escenarios (SAA)
+integrator.py	Carga datasets CSV y ejecuta modelos
+main_demo.py	Ejecuta pipeline completo y genera métricas
